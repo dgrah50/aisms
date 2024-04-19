@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = "AI over SMS"
+authors = ["dgrah50 <d.graham50@hotmail.co.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.110.1"
+uvicorn = "^0.29.0"
+twilio = "^9.0.4"
+langchain = "^0.1.16"
+aiohttp = "^3.9.5"
+sqlmodel = "^0.0.16"
+langchain-openai = "^0.1.3"
+python-dotenv = "^1.0.1"
+python-multipart = "^0.0.9"
+cacheing = "^0.1.1"
+googlemaps = "^4.10.0"
+langchainhub = "^0.1.15"
+
+
+[tool.poetry.scripts]
+start = "app.main:start"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
+mypy = "^1.9.0"
+
+[tool.mypy]
+check_untyped_defs = true
+ignore_missing_imports = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.ruff]
+line-length = 100
+exclude = ["build/"]
+lint.extend-select = ["I"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
