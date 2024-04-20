@@ -26,33 +26,34 @@ Clone the repository:
 ```bash
 git clone https://github.com/dgrah50/aisms
 cd aisms
+```
 
 
-Install dependencies
-Using poetry:
+## Install dependencies Using poetry:
 
 ```bash
-Copy code
 poetry install
+```
 
-Environment Variables
+## Environment Variables
 Create a `.env` file in the root directory with the following variables:
 
 ```bash
 OPENAI_API_KEY=your_openai_key
 GMAPS_API_KEY=your_googlemaps_key
 TWILIO_AUTH_TOKEN=your_twilio_auth_token_here
+```
 
-
-Usage
+## Usage
 To start the application, run:
 
 ```bash
 poetry run start
+```
 
 This command starts the FastAPI server on `http://localhost:8000\` by default, and the server will reload automatically on code changes.
 
-API Routes
+## API Routes
 
 `POST /sms/`: Endpoint to receive SMS messages from Twilio and process based on the command or regular chat.
 Security
