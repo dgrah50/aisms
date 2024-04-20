@@ -27,7 +27,7 @@ def get_directions(
     transit_mode: Optional[Union[str, List[str]]] = None,
     transit_routing_preference: Optional[str] = None,
     traffic_model: Optional[str] = None,
-) -> List[Dict[str, Any]]:
+) -> str:
     """
     Get directions between an origin point and a destination point using specified travel mode and conditions.
     Parameters are passed directly to the Google Maps API client for flexible route querying.
@@ -51,45 +51,7 @@ def get_directions(
     }
     # Filter out None values
     filtered_params = {key: value for key, value in params.items() if value is not None}
-    return client.directions(**filtered_params)
-
-
-def simple_directions(
-    origin: str, destination: str, mode: Optional[str] = "driving"
-) -> List[Dict[str, Any]]:
-    """
-    Provides a simplified method to get directions between two points with optional mode of transport.
-    Defaults to driving mode if not specified.
-    """
-    return get_directions(origin, destination, mode=mode)
-
-
-@tool
-def get_walking_directions(origin: str, destination: str) -> List[Dict[str, Any]]:
-    """
-    Get walking directions between two points specified by `origin` and `destination`.
-    """
-
-    return get_directions(origin, destination, mode="walking")
-
-
-@tool
-def get_bicycling_directions(origin: str, destination: str) -> List[Dict[str, Any]]:
-    """
-    Get bicycling directions between two points specified by `origin` and `destination`.
-    """
-
-    return get_directions(origin, destination, mode="bicycling")
-
-
-@tool
-def get_transit_directions(origin: str, destination: str) -> str:
-    """
-    Get transit directions between two points specified by `origin` and `destination`,
-    optionally using a specific `departure_time`.
-    """
-
-    directions = get_directions(origin, destination, mode="transit")[0]
+    directions = client.directions(**filtered_params)[0]
 
     directions = remove_keys(
         directions,
@@ -115,6 +77,42 @@ def get_transit_directions(origin: str, destination: str) -> str:
     )
 
     return str(directions)
+
+
+def simple_directions(origin: str, destination: str, mode: Optional[str] = "driving") -> str:
+    """
+    Provides a simplified method to get directions between two points with optional mode of transport.
+    Defaults to driving mode if not specified.
+    """
+    return get_directions(origin, destination, mode=mode)
+
+
+@tool
+def get_walking_directions(origin: str, destination: str) -> str:
+    """
+    Get walking directions between two points specified by `origin` and `destination`.
+    """
+
+    return get_directions(origin, destination, mode="walking")
+
+
+@tool
+def get_bicycling_directions(origin: str, destination: str) -> str:
+    """
+    Get bicycling directions between two points specified by `origin` and `destination`.
+    """
+
+    return get_directions(origin, destination, mode="bicycling")
+
+
+@tool
+def get_transit_directions(origin: str, destination: str) -> str:
+    """
+    Get transit directions between two points specified by `origin` and `destination`,
+    optionally using a specific `departure_time`.
+    """
+
+    return get_directions(origin, destination, mode="transit")
 
 
 def remove_keys(obj, keys_to_remove):
