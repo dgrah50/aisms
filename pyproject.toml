@@ -19,6 +19,9 @@ python-multipart = "^0.0.9"
 cacheing = "^0.1.1"
 googlemaps = "^4.10.0"
 langchainhub = "^0.1.15"
+tortoise-orm = "^0.20.0"
+aerich = "^0.7.2"
+asyncpg = "^0.29.0"
 
 
 [tool.poetry.scripts]
@@ -40,6 +43,10 @@ line-length = 100
 exclude = ["build/"]
 lint.extend-select = ["I"]
 
+[tool.aerich]
+tortoise_orm = "app.main.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

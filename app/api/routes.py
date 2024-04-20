@@ -1,33 +1,39 @@
-import os
-
-from fastapi import APIRouter, Depends, Form, Request, Response
+from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response
 
 from app.api.security.twilio_validator import validate_twilio_request
 from app.api.sms_handler import SMSHandler
-from services.chat_service import ChatService
-from utilities.utils import ConfigurationError
+from services.account_service import AccountService
 
 router = APIRouter()
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
 
-if openai_api_key is None:
-    raise ConfigurationError("OPENAI_API_KEY is not defined in the environment variables.")
+def get_sms_handler(request: Request):
+    return request.app.state.sms_handler
 
-chat_service = ChatService()
 
-sms_handler = SMSHandler(chat_service=chat_service)
+@router.post("/register/")
+async def register_number(
+    PhoneNumber: str = Form(...),
+    MessagesBought: int = Form(...),
+):
+    account = await AccountService.register_or_update_number(PhoneNumber, MessagesBought)
+    return {
+        "message": f"Number {account.phone_number} registered or updated successfully with message credits: {account.balance}"
+    }
 
 
 @router.post("/sms/")
 async def receive_sms(
-    request: Request,
-    validated: bool = Depends(validate_twilio_request),
-    From: str = Form(...),  # Using `Form` to extract the sender's number from the request
-    Body: str = Form(...),  # Using `Form` to extract the message body from the request
+    # validated: bool = Depends(validate_twilio_request),
+    From: str = Form(...),
+    Body: str = Form(...),
+    sms_handler: SMSHandler = Depends(get_sms_handler),
 ):
-    """
-    Endpoint to receive SMS messages and respond accordingly based on the content.
-    """
-    response_xml = await sms_handler.handle_message(From, Body)
+    # Check and decrement message count
+    if not await AccountService.decrement_message_count(From):
+        raise HTTPException(
+            status_code=403, detail="Insufficient message credits or unauthorized number"
+        )
+
+    response_xml = sms_handler.handle_message(From, Body)
     return Response(content=response_xml, media_type="application/xml")

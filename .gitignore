@@ -167,3 +167,5 @@ Thumbs.db
 .ruff_cache/
 
 trialscripts/
+
+sms_chatbot.db
