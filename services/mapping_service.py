@@ -92,7 +92,26 @@ def get_transit_directions(origin: str, destination: str) -> str:
     directions = get_directions(origin, destination, mode="transit")[0]
 
     directions = remove_keys(
-        directions, ["polyline", "url", "icon", "overview_polyline", "local_icon"]
+        directions,
+        [
+            "polyline",
+            "url",
+            "icon",
+            "overview_polyline",
+            "local_icon",
+            "end_location",
+            "start_location",
+            "building_level",
+            "bounds",
+            "copyrights",
+            "color",
+            "text_color",
+            "phone",
+            "lat",
+            "lng",
+            "time_zone",
+            "warnings",
+        ],
     )
 
     return str(directions)

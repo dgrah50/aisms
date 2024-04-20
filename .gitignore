@@ -165,3 +165,5 @@ jspm_packages/
 Thumbs.db
 
 .ruff_cache/
+
+trialscripts/
