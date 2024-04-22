@@ -13,7 +13,7 @@ def get_sms_handler(request: Request):
 
 @router.post("/sms/")
 async def receive_sms(
-    # validated: bool = Depends(validate_twilio_request),
+    validated: bool = Depends(validate_twilio_request),
     is_allowed: bool = Depends(is_whitelisted),
     From: str = Form(...),
     Body: str = Form(...),
