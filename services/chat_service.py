@@ -52,7 +52,7 @@ class ChatService:
             )
 
             # Update chat history
-            session["history"].append(
+            session["history"].extend(
                 [
                     HumanMessage(content=query),
                     AIMessage(content=response_text),
