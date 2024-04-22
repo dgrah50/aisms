@@ -11,3 +11,11 @@ def create_chat_service():
         raise ConfigurationError("OPENAI_API_KEY is not defined in the environment variables.")
 
     return ChatService()
+
+
+def get_whitelisted_numbers():
+    numbers = os.getenv("WHITELISTED_NUMBERS", "")
+    if numbers is None:
+        raise ConfigurationError("WHITELISTED_NUMBERS is not defined in the environment variables.")
+
+    return numbers.split(",") if numbers else []
