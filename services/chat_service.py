@@ -23,7 +23,7 @@ class ChatService:
 
     def __init__(self, timeout: int = TIMEOUT_PERIOD):
         """Initialize the chat service with a timeout for caching and set up the agent execution chain."""
-        self.cache: TTLCache = TTLCache(maxsize=CACHE_SIZE, ttl=timeout)
+        self.cache: TTLCache = TTLCache(capacity=CACHE_SIZE, ttl=timeout)
         self.output_parser: StrOutputParser = StrOutputParser()
 
         self.agent: BaseMultiActionAgent = cast(

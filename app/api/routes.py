@@ -17,5 +17,5 @@ async def receive_sms(
     Body: str = Form(...),
     sms_handler: SMSHandler = Depends(get_sms_handler),
 ):
-    response_xml = sms_handler.handle_message(From, Body)
+    response_xml = await sms_handler.handle_message(From, Body)
     return Response(content=response_xml, media_type="application/xml")
