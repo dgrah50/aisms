@@ -2,18 +2,44 @@ import uuid
 from typing import Any, Dict, cast
 
 from cacheing import TTLCache
-from langchain import hub
 from langchain.agents import AgentExecutor, BaseMultiActionAgent, create_tool_calling_agent
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
 from models.models import Message
 
 from .mapping_service import mapping_tools
 
+BASE_PROMPT = """
+You are an AI-powered assistant designed to communicate via SMS. Your primary goal is to provide timely and accurate information to users in a concise manner. Keep your responses brief, typically under 320 characters, to ensure they fit within two SMS messages whenever possible. Focus on delivering clear and direct answers without extraneous details or conversational fillers.
+
+Respond promptly to user inquiries with relevant information.
+Use simple, clear language that can be easily understood on small screens.
+Prioritize direct answers or instructions; avoid open-ended responses.
+When necessary, guide users on how to obtain more detailed information via links or additional resources.
+Automate common tasks and provide instant solutions where applicable.
+For travel directions, deliver the directions in a clear, step-by-step, turn-by-turn, bullet point format. Include explicit instructions for:
+   - Exact bus numbers or train lines needed.
+   - You MUST include Specific bus stops or train platforms to use.
+   - You MUST include Departure times for public transport, and if there are any transfers, provide timing details.
+   - Estimated time of arrival at each transfer point and final destination.
+   - Landmarks or physical store signs to look for when making turns or exiting transportation.
+For complex routes or safety concerns, offer alternative route suggestions if available.
+Your functionality includes handling FAQs, providing directions from point A to point B using a provided directions API. You do not support voice calls or multimedia messages. Always request clarification if a query is ambiguous or incomplete.
+"""
 # Constants
-PROMPT = hub.pull("hwchase17/openai-functions-agent")
+
+PROMPT = ChatPromptTemplate.from_messages(
+    [
+        ("system", BASE_PROMPT),
+        ("placeholder", "{chat_history}"),
+        ("human", "{input}"),
+        ("placeholder", "{agent_scratchpad}"),
+    ]
+)
+
 TIMEOUT_PERIOD = 300  # 5 minutes in seconds
 CACHE_SIZE = 1000
 
