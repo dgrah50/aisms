@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.api.config import create_chat_service
+from app.api.routes import router as sms_router
 from app.api.sms_handler import SMSHandler
 from utilities.utils import get_database_url
 
@@ -18,8 +19,6 @@ TORTOISE_ORM = {
         },
     },
 }
-
-from app.api.routes import router as sms_router  # noqa: E402
 
 app = FastAPI()
 app.include_router(sms_router)
