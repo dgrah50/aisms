@@ -1,13 +1,12 @@
 # SMS AI Chatbot
 
-This project is an SMS AI Chatbot built using FastAPI, Twilio, and LangChain. It is designed to handle SMS interactions with users, providing functionalities like chat, account balance checking, resetting chat history, and fetching directions.
+This project is an SMS AI Chatbot built using FastAPI, Twilio, and LangChain. It is designed to handle SMS interactions with users, providing functionalities like basic chat and fetching directions.
 
-It's aimed at supporting dumbphones my providing basic needs over SMS. 
+It's aimed at supporting dumbphones by providing basic needs over SMS. 
 
 ## Features
 
 - **Chat**: Regular ChatGPT-style conversations over SMS.
-- **Account Balance**: Check the user's account balance.
 - **Reset Chat History**: Allows users to reset their conversation history.
 - **Get Directions**: Users can request directions from one location to another.
 
@@ -42,6 +41,7 @@ Create a `.env` file in the root directory with the following variables:
 OPENAI_API_KEY=your_openai_key
 GMAPS_API_KEY=your_googlemaps_key
 TWILIO_AUTH_TOKEN=your_twilio_auth_token_here
+WHITELISTED_NUMBERS=+1234567890,+0987654321
 ```
 
 ## Usage
